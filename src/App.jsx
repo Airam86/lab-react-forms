@@ -3,11 +3,12 @@ import { useState } from "react";
 import Navbar from "./components/Navbar";
 import TableHeader from "./components/TableHeader";
 import StudentCard from "./components/StudentCard";
-
 import studentsData from "./assets/students.json";
 
 function App() {
   const [students, setStudents] = useState(studentsData);
+
+  // Variables de estado para las entradas del formulario
   const [fullName, setFullName] = useState("");
   const [image, setImage] = useState("");
   const [phone, setPhone] = useState("");
@@ -16,15 +17,11 @@ function App() {
   const [graduationYear, setGraduationYear] = useState(2023);
   const [graduated, setGraduated] = useState(false);
 
-
-
-  
-  //funcion encargada de crear nuevo objeto para añadir al array
-
+  // Función encargada de crear un nuevo objeto y agregarlo al array
   function handleSubmit(event) {
     event.preventDefault();
 
-    const newStudentArray = {
+    const newStudent = {
       _id: students.length + 1,
       fullName,
       email,
@@ -34,9 +31,18 @@ function App() {
       graduationYear,
       graduated,
     };
-    //copia del array
-    
-    setStudents([...students, newStudentArray]);
+
+    // Agregar el nuevo estudiante al estado
+    setStudents([...students, newStudent]);
+
+    // Restablecer las entradas del formulario
+    setFullName("");
+    setImage("");
+    setPhone("");
+    setEmail("");
+    setProgram("");
+    setGraduationYear(2023);
+    setGraduated(false);
   }
 
   return (
@@ -53,9 +59,7 @@ function App() {
               name="fullName"
               type="text"
               placeholder="Full Name"
-              onChange={(e) => {
-                setFullName(e.target.value);
-              }}
+              onChange={(e) => setFullName(e.target.value)}
               value={fullName}
               id="fullName"
             />
@@ -67,9 +71,7 @@ function App() {
               name="image"
               type="url"
               placeholder="Profile Image"
-              onChange={(e) => {
-                setImage(e.target.value);
-              }}
+              onChange={(e) => setImage(e.target.value)}
               value={image}
               id="image"
             />
@@ -81,9 +83,7 @@ function App() {
               name="phone"
               type="tel"
               placeholder="Phone"
-              onChange={(e) => {
-                setPhone(e.target.value);
-              }}
+              onChange={(e) => setPhone(e.target.value)}
               value={phone}
               id="phone"
             />
@@ -95,9 +95,7 @@ function App() {
               name="email"
               type="email"
               placeholder="Email"
-              onChange={(e) => {
-                setEmail(e.target.value);
-              }}
+              onChange={(e) => setEmail(e.target.value)}
               value={email}
               id="email"
             />
@@ -109,9 +107,7 @@ function App() {
             Program
             <select
               name="program"
-              onChange={(e) => {
-                setProgram(e.target.value);
-              }}
+              onChange={(e) => setProgram(e.target.value)}
               value={program}
               id="program"
               type="select"
@@ -133,9 +129,7 @@ function App() {
               maxLength={4}
               min={2023}
               max={2030}
-              onChange={(e) => {
-                setGraduationYear(e.target.value);
-              }}
+              onChange={(e) => setGraduationYear(e.target.value)}
               value={graduationYear}
               id="graduationYear"
             />
@@ -146,11 +140,9 @@ function App() {
             <input
               name="graduated"
               type="checkbox"
-              onChange={(e) => {
-                setGraduated(e.target.value);
-              }}
+              onChange={(e) => setGraduated(e.target.checked)}
               checked={graduated}
-              id="email"
+              id="graduated"
             />
           </label>
 
@@ -159,10 +151,10 @@ function App() {
       </form>
       {/* FORM END */}
 
-      {/* TABLE/LIST HEADER */}
+      {/* TABLE/LIST HEADER*/}
       <TableHeader />
 
-      {/* STUDENT LIST */}
+      {/* STUDENT LIST*/}
       {students &&
         students.map((student) => {
           return <StudentCard key={student.email} {...student} />;
